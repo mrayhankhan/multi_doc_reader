@@ -10,7 +10,7 @@
 
 3. Obtain HuggingFace api key and add it to the `.env` file in the project directory.
 ```commandline
-HUGGINGFACEHUB_API_TOKEN=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
+HUGGINGFACEHUB_API_TOKEN=***************************
 ```
 
 4.Run app.py in your python environtment.

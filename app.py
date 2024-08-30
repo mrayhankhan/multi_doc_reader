@@ -138,15 +138,26 @@ if uploaded_file and question:
     if response.status_code != 200:
         st.error(f"Error: {response.status_code} - {response.text}")
     else:
-        # Print the entire JSON response for debugging
+        # Parse the JSON response
         response_json = response.json()
+
+        # Print the entire JSON response for debugging
         st.write(response_json)
         
-        # Display the answer if it exists
-        if 'answer' in response_json:
-            st.write(response_json['answer'])
+        # Check if the response is a list and contains the 'generated_text' key
+        if isinstance(response_json, list) and 'generated_text' in response_json[0]:
+            generated_text = response_json[0]['generated_text']
+            
+            # Extract the answer from the generated text
+            answer_start = generated_text.find("Short summary: ")
+            if answer_start != -1:
+                answer = generated_text[answer_start + len("Short summary: "):]
+                st.write(answer)
+            else:
+                st.write(generated_text)  # Display the entire generated text if no specific answer format is found
         else:
-            st.error("The response does not contain an 'answer' key.")
+            st.error("The response does not contain a 'generated_text' key.")
+
 
 # Suggestions for improving efficiency and runtime:
 # 1. Cache the preprocessing and vectorization steps to avoid redundant computations.
